@@ -36,11 +36,20 @@ class App extends Component {
     }
 
     this.createTask = this.createTask.bind(this)
+    this.toggleCompleted = this.toggleCompleted.bind(this)
   }
 
   createTask(content) {
     this.setState({ loading: true })
     this.state.todoList.methods.createTask(content).send({ from: this.state.account })
+    .once('receipt', (receipt) => {
+      this.setState({ loading: false })
+    })
+  }
+
+  toggleCompleted(taskId) {
+    this.setState({ loading: true })
+    this.state.todoList.methods.toggleCompleted(taskId).send({ from: this.state.account })
     .once('receipt', (receipt) => {
       this.setState({ loading: false })
     })
@@ -62,7 +71,10 @@ class App extends Component {
             <main role="main" className="col-lg-12 d-flex justify-content-center">
               { this.state.loading
                 ? <div id="loader" className="text-center"><p className="text-center">Loading...</p></div>
-                : <TodoList tasks={this.state.tasks} createTask={this.createTask} />
+                : <TodoList
+                  tasks={this.state.tasks}
+                  createTask={this.createTask}
+                  toggleCompleted={this.toggleCompleted} />
               }
             </main>
           </div>

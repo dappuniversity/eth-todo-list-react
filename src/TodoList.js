@@ -9,7 +9,15 @@ class TodoList extends Component {
           event.preventDefault()
           this.props.createTask(this.task.value)
         }}>
-          <input id="newTask" ref={(input) => this.task = input} type="text" className="form-control" placeholder="Add task..." required />
+          <input
+            id="newTask"
+            ref={(input) => {
+              this.task = input
+            }}
+            type="text"
+            className="form-control"
+            placeholder="Add task..."
+            required />
           <input type="submit" hidden={true} />
         </form>
         <ul id="taskList" className="list-unstyled">
@@ -17,7 +25,15 @@ class TodoList extends Component {
             return(
               <div className="taskTemplate" className="checkbox" key={key}>
                 <label>
-                  <input type="checkbox" />
+                  <input
+                  type="checkbox"
+                  name={task.id}
+                  defaultChecked={task.completed}
+                  ref={(input) => {
+                    this.checkbox = input
+                  }}
+                  onClick={(event) => {
+                    this.props.toggleCompleted(this.checkbox.name) }}/>
                   <span className="content">{task.content}</span>
                 </label>
               </div>
